@@ -55,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         if(getSupportActionBar() != null)
         getSupportActionBar().hide();
-
         //Test
         /*String s = null;
         try {
