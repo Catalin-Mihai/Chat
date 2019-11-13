@@ -111,6 +111,7 @@ public class CreateAccActivity extends AppCompatActivity {
                 dialogInfo.ShowDialogInfoEx("Your account has been successfully created", DialogInfo.InfoType.INFO_SUCCESS, 2000, runnable);
                 Log.e("RESPONSE", response);
                 submitButt.setClickable(false);
+                //asdasd
             }
         }
 
