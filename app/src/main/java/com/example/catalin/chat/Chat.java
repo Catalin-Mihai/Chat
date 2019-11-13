@@ -37,6 +37,7 @@ class Chat{
         void DBMessagesReceived(ArrayList<Message> newData);
         void MessagePosted(Message message);
     }
+
     public void setListener(ChatListener listener) {
         this.listener = listener;
     }
@@ -58,7 +59,7 @@ class Chat{
         return mData;
     }
 
-    void CreateMessagesFromDB(ArrayList<Message> newData)
+    private void CreateMessagesFromDB(ArrayList<Message> newData)
     {
         listener.DBMessagesReceived(newData);
     }
@@ -72,7 +73,7 @@ class Chat{
         new MessagesGetter().execute(url);
     }
 
-    void PostMessage(Message message) throws UnsupportedEncodingException {
+    private void PostMessage(Message message) throws UnsupportedEncodingException {
         /*String url = "https://catalinmihai.000webhostapp.com/rest/insert.php?senderID="
         + URLEncoder.encode(Integer.toString(message.getSenderID()), "UTF-8")
         + "&text=" + URLEncoder.encode(message.getText(), "UTF-8")
@@ -85,11 +86,16 @@ class Chat{
 
     void CreateMessage(Message message)
     {
+        try {
+            PostMessage(message);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         listener.MessagePosted(message);
     }
 
 
-    public void ProcessDBMessages(String jsonStr)
+    void ProcessDBMessages(String jsonStr)
     {
         ArrayList<Message> newData = new ArrayList<>();
         try {

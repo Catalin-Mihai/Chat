@@ -157,28 +157,31 @@ public class ContactsActivity extends AppCompatActivity implements GlobalGetter.
 
     }
 
+    //Called when user requested a valid contact addition
     @Override
     public void ContactRequested(int userid) {
         Log.e("TESTTTTTTT", String.valueOf(userid));
 
+        //Create a new contact formed by the user and the requested user
         ContactInserterListener contactInserterListener = new ContactInserterListener();
         ArrayList<User> userArrayList = new ArrayList<User>();
         User user2 = new User(userid);
         userArrayList.add(user);
         userArrayList.add(user2);
-        Contact contact = new Contact(1, "Group_Test_Name" ,userArrayList);
+        Contact contact = new Contact(1, "New Contact" ,userArrayList);
         contactInserterListener.SetContact(contact);
 
         GlobalGetter globalGetter = new GlobalGetter();
         globalGetter.setListener(contactInserterListener);
         try {
-            globalGetter.execute(APILinkBuilder.Build("insertcontact.php", "name", "New Contact", "user1",
+            //Insert the new contact into Database
+            globalGetter.execute(APILinkBuilder.Build("insertcontact.php", "name", contact.getName(), "user1",
                     String.valueOf(userid), "user2", String.valueOf(user.getID())));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        if(globalGetter.getStatus() == AsyncTask.Status.FINISHED)//Nu mai executa ceva
-        globalGetter.execute();
+        //if(globalGetter.getStatus() == AsyncTask.Status.FINISHED)//Nu mai executa ceva
+        //globalGetter.execute();
     }
 
     private class ContactInserterListener implements GlobalGetter.HttpContentListener
@@ -186,7 +189,7 @@ public class ContactsActivity extends AppCompatActivity implements GlobalGetter.
 
         private Contact contact;
 
-        public void SetContact(Contact contact)
+        void SetContact(Contact contact)
         {
             this.contact = contact;
         }
@@ -201,7 +204,8 @@ public class ContactsActivity extends AppCompatActivity implements GlobalGetter.
             else
             {
                 dialogInfo.ShowDialogInfo("Your contact has been succesfully added!", DialogInfo.InfoType.INFO_SUCCESS);
-                contact.setID(Integer.parseInt(response));
+                contact.setGroup_ID(Integer.parseInt(response));
+                contact.setName("Group id " + contact.getGroup_ID());
                 contactsList.add(0, contact);
                 if(recyclerView.getAdapter() != null)
                 {
@@ -237,6 +241,7 @@ public class ContactsActivity extends AppCompatActivity implements GlobalGetter.
             //E momentul in care trimitem mai departe la activitatea cu chat-ul/mesajele grupului respectiv
             Intent intent = new Intent(ContactsActivity.this, MainActivity.class);
             intent.putExtra("info", new IntentInfo(user, contact));
+            //Log.e("Contact id: ", contact.)
             //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }

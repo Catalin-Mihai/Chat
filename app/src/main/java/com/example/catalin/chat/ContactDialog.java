@@ -52,6 +52,7 @@ public class ContactDialog extends DialogFragment implements GlobalGetter.HttpCo
         }
     }
 
+    //Contactul cerut este valid. Informam listenerul cu id-ul contactului
     @Override
     public void ContentReceived(String response) {
         //listener = (ContactAdderListener) getTargetFragment();
@@ -66,6 +67,7 @@ public class ContactDialog extends DialogFragment implements GlobalGetter.HttpCo
 
     }
 
+    //Contactul cerut este invalid
     @Override
     public void ContentNotFound() {
         search_info.setVisibility(View.VISIBLE);

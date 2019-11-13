@@ -173,8 +173,8 @@ public class MainActivity extends AppCompatActivity implements Chat.ChatListener
             {
                 Message msg = new Message();
                 msg.setText(text);
-                msg.setSenderID(1);
-                msg.setGrupID(1);
+                msg.setSenderID(user.getID());
+                msg.setGrupID(contact.getGroup_ID());
                 msg.setOrientation(Message.ORIENTATION_RIGHT);
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
