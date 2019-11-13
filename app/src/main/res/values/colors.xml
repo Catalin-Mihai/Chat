@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorMessageBody">#c6d3e7</color>
+    <color name="colorMessageText">#2f3031</color>
+    <color name="colorInputText">#dbdee7</color>
+    <color name="colorSubmitButton">#E0E2E9</color>
+    <color name="colorLoadingProgressCircle">#C2C8D8</color>
+    <color name="colorLoginInfoText">#FFFFFF</color>
+    <color name="colorAddContactButton">#40B9B9B9</color>
+    <color name="colorContactList">#40E4E4E4</color>
+</resources>
