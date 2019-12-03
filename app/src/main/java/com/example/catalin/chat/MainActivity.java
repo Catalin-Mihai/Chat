@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -102,7 +104,9 @@ public class MainActivity extends AppCompatActivity implements Chat.ChatListener
         int id = item.getItemId();
         if(id == R.id.menu_button)
         {
-            //deschide alta activitate
+            Intent intent = new Intent(MainActivity.this, ChatMenuActivity.class);
+            intent.putExtra("info", getIntent().getSerializableExtra("info")); //acelasi intent ca cel din clasa trecuta
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

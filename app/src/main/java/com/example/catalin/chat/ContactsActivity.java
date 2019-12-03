@@ -43,6 +43,10 @@ public class ContactsActivity extends AppCompatActivity implements GlobalGetter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
+
+        if(getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
         //Log.e("TESTTEST", "ONCREATE");
         context = this;
         /*User user1 = new User(1, "Mihai", "asdas@adsasd", "123");
@@ -173,13 +177,9 @@ public class ContactsActivity extends AppCompatActivity implements GlobalGetter.
 
         GlobalGetter globalGetter = new GlobalGetter();
         globalGetter.setListener(contactInserterListener);
-        try {
             //Insert the new contact into Database
             globalGetter.execute(APILinkBuilder.Build("insertcontact.php", "name", contact.getName(), "user1",
                     String.valueOf(userid), "user2", String.valueOf(user.getID())));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
         //if(globalGetter.getStatus() == AsyncTask.Status.FINISHED)//Nu mai executa ceva
         //globalGetter.execute();
     }

@@ -8,6 +8,7 @@ public class User implements Serializable {
     private String userName;
     private String email;
     private String password;
+    private String chatNickname;
 
     User(int ID, String userName, String email, String password)
     {
@@ -61,5 +62,13 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getChatNickname() {
+        return chatNickname;
+    }
+
+    public void setChatNickname(String chatNickname) {
+        this.chatNickname = chatNickname;
     }
 }

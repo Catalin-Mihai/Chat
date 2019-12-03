@@ -39,14 +39,8 @@ public class CreateAccActivity extends AppCompatActivity {
             //TODO CREARE CONT
             GlobalGetter globalGetter = new GlobalGetter();
             globalGetter.setListener(new AccountExistChecker(email, password));
-            try {
-                String url = APILinkBuilder.Build("getuser.php","email", email, "password", password);
-                globalGetter.execute(url);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                dialogInfo.ShowDialogInfo("Eror with the account getter. Please send us this error", DialogInfo.InfoType.INFO_ERROR);
-            }
-
+            String url = APILinkBuilder.Build("getuser.php","email", email, "password", password);
+            globalGetter.execute(url);
         }
 
         @Override
@@ -82,12 +76,8 @@ public class CreateAccActivity extends AppCompatActivity {
             //dialogInfo.ShowDialogInfo("This email is account free");
             GlobalGetter globalGetter = new GlobalGetter();
             globalGetter.setListener(new AccountInserter());
-            try {
-                String url = APILinkBuilder.Build("insertuser.php", "email", email, "password", password);
-                globalGetter.execute(url);
-            }catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            String url = APILinkBuilder.Build("insertuser.php", "email", email, "password", password);
+            globalGetter.execute(url);
         }
     }
 

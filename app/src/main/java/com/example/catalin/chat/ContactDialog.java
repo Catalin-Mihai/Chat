@@ -45,11 +45,7 @@ public class ContactDialog extends DialogFragment implements GlobalGetter.HttpCo
     {
         GlobalGetter globalGetter = new GlobalGetter();
         globalGetter.setListener(this);
-        try {
-            globalGetter.execute(APILinkBuilder.Build("getuser.php", "email", email));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        globalGetter.execute(APILinkBuilder.Build("getuser.php", "email", email));
     }
 
     //Contactul cerut este valid. Informam listenerul cu id-ul contactului
