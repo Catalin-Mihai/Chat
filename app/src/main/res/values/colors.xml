@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorMessageBody">#c6d3e7</color>
-    <color name="colorMessageText">#2f3031</color>
+    <color name="colorMessageText">#2F3031</color>
     <color name="colorInputText">#dbdee7</color>
     <color name="colorSubmitButton">#E0E2E9</color>
     <color name="colorLoadingProgressCircle">#C2C8D8</color>
