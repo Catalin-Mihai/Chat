@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ChatMenuActivity extends AppCompatActivity implements ContactDialog.ContactAdderListener{
+public class ChatMenuActivity extends AppCompatActivity implements ContactDialog.ContactAdderListener, ContactUsersListAdapter.OnAdderButtonClicked{
 
     User user;
     Contact contact;
@@ -30,8 +30,10 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_menu);
         users_listview = (ListView) findViewById(R.id.participants_list);
-        add_participant_button = (Button) findViewById(R.id.add_participant);
-        add_participant_button.setOnClickListener(new AddParticipantButtonListener());
+        //add_participant_button = (Button) findViewById(R.id.add_participant);
+        //add_participant_button.setOnClickListener(new AddParticipantButtonListener());
+        usersList = new ArrayList<>();
+        usersList.add(new User(-1)); //non-existent user. it's the adder button
 
         dialogInfo = new DialogInfo(ChatMenuActivity.this, findViewById(R.id.main_layout));
 
@@ -43,17 +45,13 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
 
     }
 
-    private class AddParticipantButtonListener implements View.OnClickListener
-    {
+    @Override
+    public void OnAdderButtonClick() {
 
-        @Override
-        public void onClick(View v) {
-            //Open up a new contact adder dialog. Already implemented in the class ContactDialog
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            ContactDialog dialog = new ContactDialog();
-            dialog.setListener(ChatMenuActivity.this);
-            dialog.show(fragmentManager, "new_contact_dialog");
-        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ContactDialog dialog = new ContactDialog();
+        dialog.setListener(ChatMenuActivity.this);
+        dialog.show(fragmentManager, "new_contact_dialog");
     }
 
     @Override
@@ -102,7 +100,7 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
             User user = new User();
             user.setChatNickname(User.DEFAULT_NICKNAME);
             user.setID(userid);
-            usersList.add(user);
+            usersList.add(0, user);
             users_listview.deferNotifyDataSetChanged(); //notify the ListView. Maybe not needed?
         }
 
@@ -126,7 +124,6 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
         public void ContentReceived(String response) {
 
            // Log.e(ChatMenuActivity.class.getSimpleName(), response);
-            usersList = new ArrayList<>();
             JSONArray jsonArray = null;
             try {
                 jsonArray = new JSONArray(response);
@@ -138,14 +135,14 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
                     user.setID(jsonObject.getInt("userID"));
                     user.setChatNickname(jsonObject.getString("Nickname"));
 
-                    usersList.add(user);
+                    usersList.add(0, user);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             //Adaptare lista la noile date
-            ContactUsersListAdapter contactUsersListAdapter = new ContactUsersListAdapter(ChatMenuActivity.this, usersList);
+            ContactUsersListAdapter contactUsersListAdapter = new ContactUsersListAdapter(ChatMenuActivity.this, usersList, ChatMenuActivity.this);
             users_listview.setAdapter(contactUsersListAdapter);
         }
 
