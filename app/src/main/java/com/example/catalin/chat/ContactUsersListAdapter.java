@@ -46,10 +46,14 @@ public class ContactUsersListAdapter extends BaseAdapter {
         User user = users.get(position);
         ViewHolder vh = new ViewHolder();
 
+        if(convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.participants_row, parent, false);
             vh.name = (TextView) convertView.findViewById(R.id.participant_name);
             vh.more_button = (ImageButton) convertView.findViewById(R.id.participant_more);
-
+        }
+        else{
+            vh = (ViewHolder) convertView.getTag();
+        }
 
         vh.name.setText(user.getChatNickname());
         return convertView;
