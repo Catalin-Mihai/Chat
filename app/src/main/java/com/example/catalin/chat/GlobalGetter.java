@@ -7,13 +7,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GlobalGetter extends AsyncTask<String, Integer, String>
 {
     public static final String CONTENT_NOT_FOUND = "NOT_FOUND";
     public static final String CONTENT_NOT_INSERTED = "NOT_INSERTED";
-    HttpContentListener listener;
+    private HttpContentListener listener;
+    private Serializable serializable;
 
     interface HttpContentListener {
         void ContentReceived(String response);
@@ -64,6 +66,15 @@ public class GlobalGetter extends AsyncTask<String, Integer, String>
         }
     }
 
+    public void setExtra(Serializable serializable)
+    {
+        this.serializable = serializable;
+    }
+
+    public Serializable getExtra()
+    {
+        return this.serializable;
+    }
 
     /*public static <T> void ProcessContent(T object, String jsonStr)
     {

@@ -99,7 +99,7 @@ public class ContactsActivity extends AppCompatActivity implements GlobalGetter.
 
     void LoadUserContactsList(User user) throws UnsupportedEncodingException {
 
-        String url = APILinkBuilder.Build("getcontacts.php", "userid", Integer.toString(user.getID()));
+        String url = APILinkBuilder.Build("getgroups.php", "userid", Integer.toString(user.getID()));
         GlobalGetter globalGetter = new GlobalGetter();
         globalGetter.setListener(this);
         globalGetter.execute(url);
@@ -178,7 +178,7 @@ public class ContactsActivity extends AppCompatActivity implements GlobalGetter.
         GlobalGetter globalGetter = new GlobalGetter();
         globalGetter.setListener(contactInserterListener);
             //Insert the new contact into Database
-            globalGetter.execute(APILinkBuilder.Build("insertcontact.php", "name", contact.getName(), "user1",
+            globalGetter.execute(APILinkBuilder.Build("insertgroup.php", "name", contact.getName(), "user1",
                     String.valueOf(userid), "user2", String.valueOf(user.getID())));
         //if(globalGetter.getStatus() == AsyncTask.Status.FINISHED)//Nu mai executa ceva
         //globalGetter.execute();

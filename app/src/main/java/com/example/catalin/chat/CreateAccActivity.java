@@ -36,7 +36,7 @@ public class CreateAccActivity extends AppCompatActivity {
 
         @Override
         public void ValidCombination(String email, String password) {
-            //TODO CREARE CONT
+
             GlobalGetter globalGetter = new GlobalGetter();
             globalGetter.setListener(new AccountExistChecker(email, password));
             String url = APILinkBuilder.Build("getuser.php","email", email, "password", password);

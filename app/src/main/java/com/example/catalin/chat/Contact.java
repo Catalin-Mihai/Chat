@@ -12,7 +12,7 @@ public class Contact implements Serializable {
     private int group_ID;
     private ArrayList<User> usersList;
     private int ID;
-    public static final String API_filename = "getcontacts.php";
+    public static final String API_filename = "getgroups.php";
 
     public Contact()
     {

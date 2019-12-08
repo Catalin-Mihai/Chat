@@ -44,6 +44,7 @@ class Chat{
 
     public static Chat getInstance()
     {
+
         if(instance == null)
             instance = new Chat();
         return instance;

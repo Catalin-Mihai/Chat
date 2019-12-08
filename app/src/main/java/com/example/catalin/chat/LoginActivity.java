@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    void LoginUser(String password, String email) throws UnsupportedEncodingException {
+    void LoginUser(String password, String email) {
         Log.d("LOGIN", password + " " + email);
         UserGetter userGetter = new UserGetter();
         /*String url = "https://catalinmihai.000webhostapp.com/rest/getuser.php?email="
@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra("userinfo", user);
             startActivity(intent);
             finish();
-        }
+    }
 
         @Override
         public void UserNotFound() {
@@ -130,14 +130,9 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void ValidCombination(String email, String password) {
-            try {
                 LoginUser(password, email);
                 submitButton.setVisibility(View.GONE);
                 progressCircle.setVisibility(View.VISIBLE);
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
         }
 
         @Override

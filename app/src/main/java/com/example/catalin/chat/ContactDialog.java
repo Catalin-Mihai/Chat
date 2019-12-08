@@ -33,7 +33,7 @@ public class ContactDialog extends DialogFragment implements GlobalGetter.HttpCo
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button dialog_addcontact = view.findViewById(R.id.add_contact_dialog);
         dialog_addcontact.setOnClickListener(new NewContact_Dialog());
@@ -53,6 +53,8 @@ public class ContactDialog extends DialogFragment implements GlobalGetter.HttpCo
     public void ContentReceived(String response) {
         //listener = (ContactAdderListener) getTargetFragment();
         try {
+
+
             listener.ContactRequested(Integer.parseInt(response.trim()));
             dismiss();
 

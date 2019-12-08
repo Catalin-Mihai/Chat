@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
+    static final String DEFAULT_NICKNAME = "NO_NICKNAME";
+
     private int ID;
     private String userName;
     private String email;
@@ -12,6 +14,7 @@ public class User implements Serializable {
 
     User(int ID, String userName, String email, String password)
     {
+        this();
         this.ID = ID;
         this.userName = userName;
         this.email = email;
@@ -30,6 +33,7 @@ public class User implements Serializable {
         this.userName = null;
         this.email = null;
         this.password = null;
+        this.chatNickname = null;
     }
 
     public int getID() {
@@ -60,15 +64,16 @@ public class User implements Serializable {
         return password;
     }
 
-    public void setPassword(String password) {
+    void setPassword(String password) {
         this.password = password;
     }
 
-    public String getChatNickname() {
+    String getChatNickname() {
+        if(chatNickname == null) return DEFAULT_NICKNAME;
         return chatNickname;
     }
 
-    public void setChatNickname(String chatNickname) {
+    void setChatNickname(String chatNickname) {
         this.chatNickname = chatNickname;
     }
 }
