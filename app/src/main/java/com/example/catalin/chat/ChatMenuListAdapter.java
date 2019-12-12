@@ -16,27 +16,35 @@ import org.w3c.dom.Text;
 import java.net.ConnectException;
 import java.util.ArrayList;
 
-public class ContactUsersListAdapter extends BaseAdapter {
+public class ChatMenuListAdapter extends BaseAdapter {
 
-    ArrayList<User> users;
-    Context context;
+    private ArrayList<ChatMenuItem> chatMenuItems;
+    private Context context;
 
-    private OnAdderButtonClicked listener;
+    //Workaround to let only this class to notify the ItemHandler objects...
+    // ... that views were bound
+    public static final class AdapterSignal {
+        private AdapterSignal(){}
+    }
+
+    private static final AdapterSignal adapterSignal = new AdapterSignal();
+
+    /*private OnAdderButtonClicked listener;
     interface OnAdderButtonClicked{
 
         void OnAdderButtonClick();
-    }
+    }*/
 
-    ContactUsersListAdapter(Context context, ArrayList<User> users, OnAdderButtonClicked listener)
+    ChatMenuListAdapter(Context context, ArrayList<ChatMenuItem> chatMenuItems)
     {
-        this.users = users;
+        this.chatMenuItems = chatMenuItems;
         this.context = context;
-        this.listener = listener;
+        //this.listener = listener;
     }
 
     @Override
     public int getCount() {
-        return users.size();
+        return chatMenuItems.size();
     }
 
     @Override
@@ -52,7 +60,13 @@ public class ContactUsersListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        User user = users.get(position);
+        Log.e("TEST: ", "Slayout: " + R.layout.chat_menu_userslist + "layout: " + chatMenuItems.get(position).getLayout_resource_id());
+        convertView = LayoutInflater.from(context).inflate(chatMenuItems.get(position).getLayout_resource_id(), parent, false);
+        chatMenuItems.get(position).getItemHandler().notifyItemBound(adapterSignal, convertView);
+        return convertView;
+
+
+        /*User user = users.get(position);
 
         if(position != getCount()-1) //Is not the last item
         {
@@ -90,7 +104,7 @@ public class ContactUsersListAdapter extends BaseAdapter {
             });
         }
 
-        return convertView;
+        return convertView; */
     }
 
     class ViewHolderUser

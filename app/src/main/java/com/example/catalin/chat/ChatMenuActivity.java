@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,12 +17,13 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ChatMenuActivity extends AppCompatActivity implements ContactDialog.ContactAdderListener, ContactUsersListAdapter.OnAdderButtonClicked{
+public class ChatMenuActivity extends AppCompatActivity implements ContactDialog.ContactAdderListener{
 
     User user;
     Contact contact;
-    ArrayList<User> usersList;
-    ListView users_listview;
+    ArrayList<User> usersList; //list of users
+    ArrayList<ChatMenuItem> menuItems; //list that contains the all ListView items
+    ListView menuListView;
     Button add_participant_button;
     DialogInfo dialogInfo;
 
@@ -29,11 +31,11 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_menu);
-        users_listview = (ListView) findViewById(R.id.participants_list);
+        menuListView = (ListView) findViewById(R.id.menu_list);
+        menuItems = new ArrayList<>();
         //add_participant_button = (Button) findViewById(R.id.add_participant);
         //add_participant_button.setOnClickListener(new AddParticipantButtonListener());
         usersList = new ArrayList<>();
-        usersList.add(new User(-1)); //non-existent user. it's the adder button
 
         dialogInfo = new DialogInfo(ChatMenuActivity.this, findViewById(R.id.main_layout));
 
@@ -45,13 +47,16 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
 
     }
 
-    @Override
-    public void OnAdderButtonClick() {
+    private void OnAdderButtonClick() {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         ContactDialog dialog = new ContactDialog();
         dialog.setListener(ChatMenuActivity.this);
         dialog.show(fragmentManager, "new_contact_dialog");
+    }
+
+    private void OnUserMoreButtonClick(User onUser){
+        Log.e("BUTTON", "MORE BUTTON CLICKED: " + onUser.getID());
     }
 
     @Override
@@ -74,6 +79,17 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
         userInserter.setListener(new UserInsertionListener(userid));
         userInserter.execute(APILinkBuilder.Build("insertuserintogroup.php", "userid",
                 String.valueOf(userid), "groupid", String.valueOf(contact.getGroup_ID()), "nickname", User.DEFAULT_NICKNAME));
+    }
+
+    private void MakeMenu()
+    {
+        menuItems = new ArrayList<>();
+
+        //Users list
+        menuItems.add(new ChatMenuItem(R.layout.chat_menu_userslist, new UserListHandler()));
+        //Participant add button
+        menuItems.add(new ChatMenuItem(R.layout.participants_adder_button, new AddParticipantButtonHandler()));
+
     }
 
     private class UserInsertionListener implements GlobalGetter.HttpContentListener
@@ -100,8 +116,8 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
             User user = new User();
             user.setChatNickname(User.DEFAULT_NICKNAME);
             user.setID(userid);
-            usersList.add(0, user);
-            users_listview.deferNotifyDataSetChanged(); //notify the ListView. Maybe not needed?
+            usersList.add(user);
+            //menuListView.deferNotifyDataSetChanged(); //notify the ListView. Maybe not needed?
         }
 
         @Override
@@ -134,16 +150,17 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
                     User user = new User();
                     user.setID(jsonObject.getInt("userID"));
                     user.setChatNickname(jsonObject.getString("Nickname"));
-
-                    usersList.add(0, user);
+                    Log.e("USER", " " + user.getID());
+                    usersList.add(user);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             //Adaptare lista la noile date
-            ContactUsersListAdapter contactUsersListAdapter = new ContactUsersListAdapter(ChatMenuActivity.this, usersList, ChatMenuActivity.this);
-            users_listview.setAdapter(contactUsersListAdapter);
+            MakeMenu();
+            ChatMenuListAdapter chatMenuListAdapter = new ChatMenuListAdapter(ChatMenuActivity.this, menuItems);
+            menuListView.setAdapter(chatMenuListAdapter);
         }
 
         @Override
@@ -158,6 +175,58 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
         user = info.getUser();
         contact = info.getContact();
         Log.e(ChatMenuActivity.class.getSimpleName(), "info: " + user.getID() + "contactid: " + contact.getGroup_ID());
+    }
+
+    //Item handling classes
+
+    class UserListHandler extends ItemHandler<UserListHandler.ViewHolder>{
+
+        class ViewHolder {
+            ListView listView;
+        }
+
+        UserListHandler() {
+            super();
+        }
+
+        @Override
+        protected UserListHandler.ViewHolder getViews(View rootView){ //called when view is bound
+            ViewHolder viewHolder = new ViewHolder();
+            viewHolder.listView = rootView.findViewById(R.id.chatmenu_userslist);
+            return viewHolder;
+        }
+
+        @Override
+        protected void handleLogic() { //called after getViews()
+            Log.e("SIZE ", " " + usersList.size());
+            viewHolder.listView.setAdapter(new ChatMenuUsersListAdapter(ChatMenuActivity.this,
+                  usersList, ChatMenuActivity.this::OnUserMoreButtonClick));
+        }
+
+    }
+
+    class AddParticipantButtonHandler extends ItemHandler<AddParticipantButtonHandler.ViewHolder> {
+
+        class ViewHolder{
+            Button button;
+        }
+
+        AddParticipantButtonHandler() {
+            super();
+        }
+
+        @Override
+        protected AddParticipantButtonHandler.ViewHolder getViews(View rootView){ //called when view is bound
+            ViewHolder viewHolder = new ViewHolder();
+            viewHolder.button = rootView.findViewById(R.id.adder_button);
+            return viewHolder;
+        }
+
+        @Override
+        protected void handleLogic() { //called after getViews() is called
+            viewHolder.button.setOnClickListener(v -> OnAdderButtonClick());
+        }
+
     }
 }
 
