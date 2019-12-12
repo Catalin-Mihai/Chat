@@ -5,9 +5,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -16,6 +20,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 public class ChatMenuActivity extends AppCompatActivity implements ContactDialog.ContactAdderListener{
 
@@ -182,25 +187,54 @@ public class ChatMenuActivity extends AppCompatActivity implements ContactDialog
     class UserListHandler extends ItemHandler<UserListHandler.ViewHolder>{
 
         class ViewHolder {
-            ListView listView;
+            LinearLayout listView;
+            ImageButton userListToggleButton;
         }
+
+        private boolean list_toggle;
 
         UserListHandler() {
             super();
+            list_toggle = false;
         }
 
         @Override
         protected UserListHandler.ViewHolder getViews(View rootView){ //called when view is bound
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.listView = rootView.findViewById(R.id.chatmenu_userslist);
+            viewHolder.userListToggleButton = rootView.findViewById(R.id.usersList_toggle);
+
+            usersList.add(new User());
+            usersList.add(new User());
+            usersList.add(new User());
+            usersList.add(new User());usersList.add(new User());usersList.add(new User());
+            usersList.add(new User());
+            usersList.add(new User());usersList.add(new User());usersList.add(new User());
+            usersList.add(new User());
+
+            for(int i = 0; i < usersList.size(); i++)
+            {
+                View view = LayoutInflater.from(ChatMenuActivity.this).inflate(R.layout.participants_row, viewHolder.listView, false);
+                view.setVisibility(View.GONE);
+                viewHolder.listView.addView(view);
+            }
             return viewHolder;
         }
 
         @Override
         protected void handleLogic() { //called after getViews()
             Log.e("SIZE ", " " + usersList.size());
-            viewHolder.listView.setAdapter(new ChatMenuUsersListAdapter(ChatMenuActivity.this,
-                  usersList, ChatMenuActivity.this::OnUserMoreButtonClick));
+            /*viewHolder.listView.setAdapter(new ChatMenuUsersListAdapter(ChatMenuActivity.this,
+                  usersList, ChatMenuActivity.this::OnUserMoreButtonClick));*/
+            viewHolder.userListToggleButton.setOnClickListener(v -> {
+                for(int i = 1; i < viewHolder.listView.getChildCount(); i++)
+                {
+                    if(!list_toggle)
+                        viewHolder.listView.getChildAt(i).setVisibility(View.VISIBLE);
+                    else viewHolder.listView.getChildAt(i).setVisibility(View.GONE);
+                }
+                list_toggle = !list_toggle;
+            });
         }
 
     }
