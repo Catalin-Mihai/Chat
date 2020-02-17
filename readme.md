@@ -10,7 +10,7 @@ It needs more time to be finished but I feel like I reached my goal, so it's not
 
 ## Description
 
-This application allow you to chat with your friends like an usual Android app. It's designed to be very simple, providing only essential features like:
+This application allows you to chat with your friends like an usual Android app. It's designed to be very simple, providing only essential features like:
 
 - Create an account
 - Add other contacts
